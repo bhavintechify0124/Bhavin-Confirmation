@@ -1,20 +1,7 @@
-# .deepdocs.yml
+target: 
+- url : "docs/api/"
 
-docs_path: docs
-language: nodejs
-style: concise
+reinit : 'a'
 
-# How DeepDocs runs
-trigger:
-  on_pull_request: true
-  on_merge: true
 
-# How docs are updated
-update_mode: commit   # commit | comment
-
-# Optional: match APIs to doc files
-api_mapping:
-  /user:
-    file: docs/api/users.md
-  /admin:
-    file: docs/api/admin.md
+ignore :

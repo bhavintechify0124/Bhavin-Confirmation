@@ -15,6 +15,6 @@ update_mode: commit   # commit | comment
 # Optional: match APIs to doc files
 api_mapping:
   /user:
-    file: docs/api/user-routes.http
+    file: docs/api/users.md
   /admin:
-    file: docs/api/admin-routes.http
+    file: docs/api/admin.md

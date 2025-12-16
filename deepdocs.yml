@@ -1,7 +1,0 @@
-target:
-  - url: "Back-End/docseee/api/"
-
-reinit: "a"
-
-include:
-  - "Back-End

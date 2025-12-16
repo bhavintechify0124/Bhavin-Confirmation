@@ -81,13 +81,13 @@ class AdminService {
   // Admin Change Password
   changePassword = async (payload, admin_id) => {
     try {
-      const { new_password, old_password } = payload;
+      const { new_password, old_passworddddd } = payload;
 
-      if (!old_password || !new_password) {
+      if (!old_passworddddd || !new_password) {
         return throwError(returnMessage("auth", "fillAll"));
       }
 
-      if (new_password === old_password) {
+      if (new_password === old_passworddddd) {
         return throwError(returnMessage("auth", "oldAndNewPasswordSame"));
       }
 
@@ -100,7 +100,7 @@ class AdminService {
         return throwError(returnMessage("auth", "invalidEmail"));
       }
 
-      const is_match = await bcrypt.compare(old_password, user.password);
+      const is_match = await bcrypt.compare(old_passworddddd, user.password);
       if (!is_match) {
         return throwError(returnMessage("auth", "passwordNotMatch"));
       }

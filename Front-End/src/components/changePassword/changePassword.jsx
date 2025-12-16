@@ -27,7 +27,7 @@ import { clearUser, logOut } from "../../Redux/Auth/AuthSlice";
 const apiUrl = import.meta.env.VITE_BASE_URL;
 
 const passwordSchema = yup.object().shape({
-  old_password: yup
+  old_passworddddd: yup
     .string()
     .required("Old password is required")
     .matches(
@@ -142,11 +142,11 @@ const ChangePassword = () => {
               <input
                 type={showPassword ? "text" : "password"}
                 className={`form-control ${
-                  errors.old_password ? "is-invalid" : ""
+                  errors.old_passworddddd ? "is-invalid" : ""
                 }`}
                 id="password"
                 placeholder="Old password"
-                {...register("old_password")}
+                {...register("old_passworddddd")}
                 onKeyDown={(e) => {
                   if (e.key === " ") e.preventDefault();
                 }}
@@ -158,9 +158,9 @@ const ChangePassword = () => {
               >
                 <FontAwesomeIcon icon={showPassword ? faEyeSlash : faEye} />
               </button>
-              {errors.old_password && (
+              {errors.old_passworddddd && (
                 <div className="invalid-feedback">
-                  {errors.old_password.message}
+                  {errors.old_passworddddd.message}
                 </div>
               )}
             </div>

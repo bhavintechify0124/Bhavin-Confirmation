@@ -87,9 +87,21 @@ Content-Type: application/json
   "page": 1,
   "limit": 10,
   "search": "",
-  "skill_name_n": "javascript",
-  "gender": "",
-  "department": ""
+  "is_active": true,
+  "is_verified": true
+}
+
+### Admin Get Customers List
+POST {{baseUrl}}/admin/get-customers
+Authorization: Bearer {{adminToken}}
+Content-Type: application/json
+
+{
+  "page": 1,
+  "limit": 10,
+  "search": "",
+  "is_active": true,
+  "is_verified": true
 }
 
 ### Admin Update User Status

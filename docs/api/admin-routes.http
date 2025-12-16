@@ -87,14 +87,10 @@ Content-Type: application/json
   "page": 1,
   "limit": 10,
   "search": "",
-  "is_active": true,
-  "is_verified": true,
-  "role": "admin"
+  "skill_name_new": "",
+  "gender": "",
+  "department": ""
 }
-
-Notes:
-- Optional filters supported: search, skill_name_new, gender, department, role, is_active, is_verified.
-- Boolean-like fields (is_active, is_verified) accept true/false or 1/0 (or string variants).
 
 ### Admin Get Customers List
 POST {{baseUrl}}/admin/get-customers
@@ -105,13 +101,10 @@ Content-Type: application/json
   "page": 1,
   "limit": 10,
   "search": "",
-  "is_active": true,
-  "is_verified": true,
-  "role": "customer"
+  "skill_name_new": "",
+  "gender": "",
+  "department": ""
 }
-
-Notes:
-- Same optional filters as users: search, skill_name_new, gender, department, role, is_active, is_verified.
 
 ### Admin Update User Status
 POST {{baseUrl}}/admin/update-user-status/:id
@@ -128,12 +121,8 @@ Authorization: Bearer {{adminToken}}
 Content-Type: application/json
 
 ### Admin Get Notifications
-GET {{baseUrl}}/admin/notification?skip=0&limit=10&is_read=false
+GET {{baseUrl}}/admin/notification?skip=0&limit=10
 Authorization: Bearer {{adminToken}}
-
-Notes:
-- Added optional is_read query parameter to filter notifications by read state (true/false or 1/0).
-- Pagination params: skip and limit.
 
 ### Admin Read Notification
 POST {{baseUrl}}/admin/notification

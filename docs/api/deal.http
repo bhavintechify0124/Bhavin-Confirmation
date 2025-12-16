@@ -19,12 +19,55 @@ Content-Type: application/json
 
 
 ###############################################
-# DEALS ENDPOINTS (Admin - Protected)
+# DEAL ENDPOINTS (Admin Authentication Required)
 ###############################################
 
-### Get Deal Statistics
+# Note: All /deals routes are protected by admin authentication. Set @adminToken
+# with the JWT returned from the admin login and include the Authorization header:
+# Authorization: Bearer {{adminToken}}
+
+### Create Deal
+POST {{baseUrl}}/deals/create
+Content-Type: application/json
+Authorization: Bearer {{adminToken}}
+
+{
+  "title": "New Deal",
+  "description": "Description of the deal",
+  "amount": 1000,
+  "customer_id": "<customerId>",
+  "other_fields": "..."
+}
+
+### List Deals
+POST {{baseUrl}}/deals/list
+Content-Type: application/json
+Authorization: Bearer {{adminToken}}
+
+{
+  "page": 1,
+  "limit": 10,
+  "filters": {}
+}
+
+### Deal Statistics
 GET {{baseUrl}}/deals/statistics
 Authorization: Bearer {{adminToken}}
-Content-Type: application/json
 
-# Retrieves aggregated statistics for deals (requires admin authentication)
+### Get Deal By ID
+GET {{baseUrl}}/deals/{{dealId}}
+Authorization: Bearer {{adminToken}}
+
+### Update Deal
+PUT {{baseUrl}}/deals/{{dealId}}
+Content-Type: application/json
+Authorization: Bearer {{adminToken}}
+
+{
+  "title": "Updated title",
+  "amount": 1200
+}
+
+### Delete Deal
+DELETE {{baseUrl}}/deals/{{dealId}}
+Authorization: Bearer {{adminToken}}

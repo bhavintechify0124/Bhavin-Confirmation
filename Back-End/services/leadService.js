@@ -3,6 +3,7 @@ const { throwError } = require("../helpers/errorUtil");
 const { returnMessage, validateEmail, paginationObject } = require("../utils/utils");
 const statusCode = require("../messages/statusCodes.json");
 const Lead = require("../models/leadSchema");
+const Deal = require("../models/dealSchema");
 
 class LeadService {
   // Create Lead
@@ -292,6 +293,100 @@ class LeadService {
       return;
     } catch (error) {
       logger.error(`Error while deleting lead, ${error}`);
+      throwError(error?.message, error?.statusCode);
+    }
+  };
+
+  // Convert Lead to Deal
+  convertLeadToDeal = async (leadId, payload, user) => {
+    try {
+      const {
+        title,
+        description,
+        amount,
+        currency,
+        status,
+        probability,
+        expected_close_date,
+        assigned_to,
+        notes,
+      } = payload;
+
+      // Get the lead
+      const lead = await Lead.findOne({
+        _id: leadId,
+        is_deleted: false,
+      })
+        .populate("assigned_to", "first_name last_name email")
+        .lean();
+
+      if (!lead) {
+        return throwError(
+          returnMessage("lead", "leadNotFound"),
+          statusCode.notFound
+        );
+      }
+
+      // Check if deal already exists for this lead
+      const existingDeal = await Deal.findOne({
+        lead_id: leadId,
+        is_deleted: false,
+      }).lean();
+
+      if (existingDeal) {
+        return throwError(
+          returnMessage("lead", "dealAlreadyExistsForLead"),
+          statusCode.badRequest
+        );
+      }
+
+      // Validate probability range if provided
+      if (probability !== undefined && (probability < 0 || probability > 100)) {
+        return throwError(
+          returnMessage("deal", "invalidProbability"),
+          statusCode.badRequest
+        );
+      }
+
+      // Create deal from lead
+      const dealTitle = title || `${lead.first_name} ${lead.last_name} - ${lead.company_name || "Deal"}`;
+      const dealDescription = description || `Deal converted from lead: ${lead.first_name} ${lead.last_name} (${lead.email})`;
+
+      const dealData = {
+        title: dealTitle,
+        description: dealDescription,
+        amount: amount || 0,
+        currency: currency || "USD",
+        lead_id: leadId,
+        status: status || "open",
+        probability: probability || 0,
+        expected_close_date: expected_close_date || null,
+        assigned_to: assigned_to || lead.assigned_to || null,
+        notes: notes || lead.notes || "",
+        created_by: user?._id || lead.created_by || null,
+      };
+
+      const deal = await Deal.create(dealData);
+
+      // Optionally update lead status to indicate conversion
+      await Lead.findByIdAndUpdate(leadId, {
+        status: "converted",
+      });
+
+      const populatedDeal = await Deal.findById(deal._id)
+        .populate("lead_id", "first_name last_name email company_name contact_number")
+        .populate("assigned_to", "first_name last_name email")
+        .populate("created_by", "first_name last_name email")
+        .select("-is_deleted")
+        .lean();
+
+      return {
+        deal: populatedDeal,
+        lead: lead,
+        message: "Lead successfully converted to deal",
+      };
+    } catch (error) {
+      logger.error(`Error while converting lead to deal, ${error}`);
       throwError(error?.message, error?.statusCode);
     }
   };

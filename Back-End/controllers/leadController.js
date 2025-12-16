@@ -65,3 +65,15 @@ exports.deleteLead = catchAsyncError(async (req, res, next) => {
   );
 });
 
+// Convert Lead to Deal
+exports.convertLeadToDeal = catchAsyncError(async (req, res, next) => {
+  const result = await leadService.convertLeadToDeal(req?.params?.id, req?.body, req?.user);
+  sendResponse(
+    res,
+    true,
+    returnMessage("lead", "leadConvertedToDeal"),
+    result,
+    statusCode.success
+  );
+});
+

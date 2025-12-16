@@ -54,7 +54,9 @@
     "leadFetched": "Lead fetched successfully.",
     "leadUpdated": "Lead updated successfully.",
     "leadDeleted": "Lead deleted successfully.",
-    "leadNotFound": "Lead not found."
+    "leadNotFound": "Lead not found.",
+    "leadConvertedToDeal": "Lead converted to deal successfully.",
+    "dealAlreadyExistsForLead": "A deal already exists for this lead."
   },
   "deal": {
     "dealCreated": "Deal created successfully.",

@@ -191,6 +191,82 @@ class ProjectService {
         }
       }
 
+      // End date range filters
+      if (searchObj.end_date_from || searchObj.end_date_to) {
+        queryObj["end_date"] = {};
+        if (searchObj.end_date_from) {
+          queryObj["end_date"]["$gte"] = new Date(searchObj.end_date_from);
+        }
+        if (searchObj.end_date_to) {
+          queryObj["end_date"]["$lte"] = new Date(searchObj.end_date_to);
+        }
+      }
+
+      // Progress range filters
+      if (searchObj.min_progress !== undefined && searchObj.min_progress !== null && searchObj.min_progress !== "") {
+        queryObj["progress"] = { ...queryObj["progress"], $gte: Number(searchObj.min_progress) };
+      }
+
+      if (searchObj.max_progress !== undefined && searchObj.max_progress !== null && searchObj.max_progress !== "") {
+        queryObj["progress"] = { ...queryObj["progress"], $lte: Number(searchObj.max_progress) };
+      }
+
+      if (searchObj.min_progress !== undefined && searchObj.max_progress !== undefined) {
+        queryObj["progress"] = {
+          $gte: Number(searchObj.min_progress),
+          $lte: Number(searchObj.max_progress),
+        };
+      }
+
+      // Spent amount filters
+      if (searchObj.min_spent !== undefined && searchObj.min_spent !== null && searchObj.min_spent !== "") {
+        queryObj["spent_amount"] = { ...queryObj["spent_amount"], $gte: Number(searchObj.min_spent) };
+      }
+
+      if (searchObj.max_spent !== undefined && searchObj.max_spent !== null && searchObj.max_spent !== "") {
+        queryObj["spent_amount"] = { ...queryObj["spent_amount"], $lte: Number(searchObj.max_spent) };
+      }
+
+      if (searchObj.min_spent !== undefined && searchObj.max_spent !== undefined) {
+        queryObj["spent_amount"] = {
+          $gte: Number(searchObj.min_spent),
+          $lte: Number(searchObj.max_spent),
+        };
+      }
+
+      // Created by filter
+      if (searchObj.created_by && searchObj.created_by !== "") {
+        queryObj["created_by"] = searchObj.created_by;
+      }
+
+      // Tag filter
+      if (searchObj.tag && searchObj.tag !== "") {
+        queryObj["tags"] = {
+          $regex: searchObj.tag.toLowerCase(),
+          $options: "i",
+        };
+      }
+
+      // Overdue projects (projects past end_date and not completed/cancelled)
+      if (searchObj.overdue !== undefined && searchObj.overdue !== null && searchObj.overdue !== "") {
+        const isOverdue = searchObj.overdue === true || searchObj.overdue === "true" || searchObj.overdue === 1 || searchObj.overdue === "1";
+        if (isOverdue) {
+          queryObj["end_date"] = { $lt: new Date() };
+          queryObj["status"] = { $nin: ["completed", "cancelled"] };
+        }
+      }
+
+      // Created date range filters
+      if (searchObj.created_from || searchObj.created_to) {
+        queryObj["createdAt"] = {};
+        if (searchObj.created_from) {
+          queryObj["createdAt"]["$gte"] = new Date(searchObj.created_from);
+        }
+        if (searchObj.created_to) {
+          queryObj["createdAt"]["$lte"] = new Date(searchObj.created_to);
+        }
+      }
+
       const pagination = paginationObject(searchObj);
 
       const [projects, totalProjects] = await Promise.all([

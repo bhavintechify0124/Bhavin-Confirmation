@@ -6,6 +6,7 @@ leadRoute.use(protect);
 
 leadRoute.post("/create", leadController.createLead);
 leadRoute.post("/list", leadController.listLeads);
+leadRoute.post("/:id/convert-to-deal", leadController.convertLeadToDeal);
 leadRoute.get("/:id", leadController.getLeadById);
 leadRoute.put("/:id", leadController.updateLead);
 leadRoute.delete("/:id", leadController.deleteLead);

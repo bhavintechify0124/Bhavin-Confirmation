@@ -6,6 +6,7 @@ dealRoute.use(protect);
 
 dealRoute.post("/create", dealController.createDeal);
 dealRoute.post("/list", dealController.listDeals);
+dealRoute.get("/statistics", dealController.getDealStatistics);
 dealRoute.get("/:id", dealController.getDealById);
 dealRoute.put("/:id", dealController.updateDeal);
 dealRoute.delete("/:id", dealController.deleteDeal);

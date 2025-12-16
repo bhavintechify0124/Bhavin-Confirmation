@@ -65,3 +65,15 @@ exports.deleteDeal = catchAsyncError(async (req, res, next) => {
   );
 });
 
+// Get Deal Statistics
+exports.getDealStatistics = catchAsyncError(async (req, res, next) => {
+  const statistics = await dealService.getDealStatistics(req?.body || req?.query);
+  sendResponse(
+    res,
+    true,
+    returnMessage("deal", "dealStatisticsFetched"),
+    statistics,
+    statusCode.success
+  );
+});
+

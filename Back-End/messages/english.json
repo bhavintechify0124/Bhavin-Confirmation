@@ -63,7 +63,8 @@
     "dealUpdated": "Deal updated successfully.",
     "dealDeleted": "Deal deleted successfully.",
     "dealNotFound": "Deal not found.",
-    "invalidProbability": "Probability must be between 0 and 100."
+    "invalidProbability": "Probability must be between 0 and 100.",
+    "dealStatisticsFetched": "Deal statistics fetched successfully."
   },
   "emailTemplate": {
     "forgotPasswordSubject": "Reset your password now.",

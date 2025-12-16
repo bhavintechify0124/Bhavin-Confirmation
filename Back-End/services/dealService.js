@@ -300,6 +300,116 @@ class DealService {
       throwError(error?.message, error?.statusCode);
     }
   };
+
+  // Get Deal Statistics
+  getDealStatistics = async (searchObj) => {
+    try {
+      const queryObj = {
+        is_deleted: false,
+      };
+
+      // Apply filters if provided
+      if (searchObj.assigned_to && searchObj.assigned_to !== "") {
+        queryObj["assigned_to"] = searchObj.assigned_to;
+      }
+
+      if (searchObj.lead_id && searchObj.lead_id !== "") {
+        queryObj["lead_id"] = searchObj.lead_id;
+      }
+
+      // Date range filters
+      if (searchObj.start_date || searchObj.end_date) {
+        queryObj["createdAt"] = {};
+        if (searchObj.start_date) {
+          queryObj["createdAt"]["$gte"] = new Date(searchObj.start_date);
+        }
+        if (searchObj.end_date) {
+          queryObj["createdAt"]["$lte"] = new Date(searchObj.end_date);
+        }
+      }
+
+      // Get all deals matching the query
+      const allDeals = await Deal.find(queryObj).lean();
+
+      // Calculate statistics
+      const totalDeals = allDeals.length;
+      const totalDealValue = allDeals.reduce((sum, deal) => sum + (deal.amount || 0), 0);
+      const averageDealValue = totalDeals > 0 ? totalDealValue / totalDeals : 0;
+
+      // Deals by status
+      const dealsByStatus = {};
+      allDeals.forEach((deal) => {
+        const status = deal.status || "open";
+        if (!dealsByStatus[status]) {
+          dealsByStatus[status] = {
+            count: 0,
+            total_value: 0,
+          };
+        }
+        dealsByStatus[status].count += 1;
+        dealsByStatus[status].total_value += deal.amount || 0;
+      });
+
+      // Won deals
+      const wonDeals = allDeals.filter((deal) => deal.status === "won");
+      const wonDealsCount = wonDeals.length;
+      const wonDealsValue = wonDeals.reduce((sum, deal) => sum + (deal.amount || 0), 0);
+
+      // Lost deals
+      const lostDeals = allDeals.filter((deal) => deal.status === "lost");
+      const lostDealsCount = lostDeals.length;
+      const lostDealsValue = lostDeals.reduce((sum, deal) => sum + (deal.amount || 0), 0);
+
+      // Open/Active deals
+      const openDeals = allDeals.filter(
+        (deal) => deal.status !== "won" && deal.status !== "lost"
+      );
+      const openDealsCount = openDeals.length;
+      const openDealsValue = openDeals.reduce((sum, deal) => sum + (deal.amount || 0), 0);
+
+      // Average probability
+      const totalProbability = allDeals.reduce((sum, deal) => sum + (deal.probability || 0), 0);
+      const averageProbability = totalDeals > 0 ? totalProbability / totalDeals : 0;
+
+      // Deals by assigned user
+      const dealsByUser = {};
+      allDeals.forEach((deal) => {
+        const userId = deal.assigned_to ? deal.assigned_to.toString() : "unassigned";
+        if (!dealsByUser[userId]) {
+          dealsByUser[userId] = {
+            count: 0,
+            total_value: 0,
+          };
+        }
+        dealsByUser[userId].count += 1;
+        dealsByUser[userId].total_value += deal.amount || 0;
+      });
+
+      return {
+        total_deals: totalDeals,
+        total_deal_value: totalDealValue,
+        average_deal_value: Math.round(averageDealValue * 100) / 100,
+        won_deals: {
+          count: wonDealsCount,
+          total_value: wonDealsValue,
+        },
+        lost_deals: {
+          count: lostDealsCount,
+          total_value: lostDealsValue,
+        },
+        open_deals: {
+          count: openDealsCount,
+          total_value: openDealsValue,
+        },
+        average_probability: Math.round(averageProbability * 100) / 100,
+        deals_by_status: dealsByStatus,
+        deals_by_user: dealsByUser,
+      };
+    } catch (error) {
+      logger.error(`Error while getting deal statistics, ${error}`);
+      throwError(error?.message, error?.statusCode);
+    }
+  };
 }
 
 module.exports = DealService;

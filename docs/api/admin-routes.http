@@ -18,7 +18,8 @@ Content-Type: application/json
 }
 
 ### Admin Forgot Password
-POST {{baseUrl}}/admin/forgot-password
+# Note: route in code has a typo and is exposed as /fodrgot-password
+POST {{baseUrl}}/admin/fodrgot-password
 Content-Type: application/json
 
 {
@@ -31,7 +32,7 @@ Content-Type: application/json
 
 {
   "email": "admin@example.com",
-  "otp": "123456",
+  "token": "token_received_in_email",
   "new_password": "newadminpassword123"
 }
 
@@ -41,7 +42,8 @@ Content-Type: application/json
 ###############################################
 
 ### Admin Change Password
-POST {{baseUrl}}/admin/change-password
+# Note: route in code has a typo and is exposed as /changem-password
+POST {{baseUrl}}/admin/changem-password
 Authorization: Bearer {{adminToken}}
 Content-Type: application/json
 
@@ -87,8 +89,9 @@ Content-Type: application/json
   "page": 1,
   "limit": 10,
   "search": "",
-  "is_active": true,
-  "is_verified": true
+  "skill_name": "",
+  "gender": "",
+  "department": ""
 }
 
 ### Admin Update User Status
@@ -97,7 +100,7 @@ Authorization: Bearer {{adminToken}}
 Content-Type: application/json
 
 {
-  "is_active": true
+  "status": true
 }
 
 ### Admin Delete User
@@ -106,7 +109,8 @@ Authorization: Bearer {{adminToken}}
 Content-Type: application/json
 
 ### Admin Get Notifications
-GET {{baseUrl}}/admin/notification?page=1&limit=10
+# The service reads `skip` and `limit` from query params
+GET {{baseUrl}}/admin/notification?skip=0&limit=10
 Authorization: Bearer {{adminToken}}
 
 ### Admin Read Notification
@@ -115,6 +119,5 @@ Authorization: Bearer {{adminToken}}
 Content-Type: application/json
 
 {
-  "notification_id": "notification_id_here"
+  "notification_id": "notification_id_here"  # or use "all" to mark all as read
 }
-

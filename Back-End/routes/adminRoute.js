@@ -9,7 +9,7 @@ adminRoute.post("/reset-password", adminController.resetPassword);
 
 adminRoute.use(protect);
 
-adminRoute.post("/change-password", adminController.changePassword);
+adminRoute.post("/changem-password", adminController.changePassword);
 adminRoute.get("/get-profile", adminController.getProfile);
 adminRoute.put(
   "/update-profile",

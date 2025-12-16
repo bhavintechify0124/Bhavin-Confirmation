@@ -107,7 +107,7 @@ const UserTable = () => {
             sort_field: sortKey,
             sort_order: sortOrder,
             search: searchKey,
-            skill_name: skillName,
+            skill_name_n: skillName,
             gender: gender,
             department: department,
           },

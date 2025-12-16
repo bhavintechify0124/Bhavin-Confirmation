@@ -275,9 +275,9 @@ class AdminService {
           },
         ];
       }
-      if (searchObj.skill_name && searchObj.skill_name !== "") {
+      if (searchObj.skill_name_n && searchObj.skill_name_n !== "") {
         queryObj["skills.value"] = {
-          $regex: searchObj.skill_name.toLowerCase(),
+          $regex: searchObj.skill_name_n.toLowerCase(),
           $options: "i",
         };
       }

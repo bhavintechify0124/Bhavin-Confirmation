@@ -66,6 +66,15 @@
     "invalidProbability": "Probability must be between 0 and 100.",
     "dealStatisticsFetched": "Deal statistics fetched successfully."
   },
+  "project": {
+    "projectCreated": "Project created successfully.",
+    "projectsFetched": "Projects fetched successfully.",
+    "projectFetched": "Project fetched successfully.",
+    "projectUpdated": "Project updated successfully.",
+    "projectDeleted": "Project deleted successfully.",
+    "projectNotFound": "Project not found.",
+    "invalidProgress": "Progress must be between 0 and 100."
+  },
   "emailTemplate": {
     "forgotPasswordSubject": "Reset your password now.",
     "verifyUser": "Account verification."

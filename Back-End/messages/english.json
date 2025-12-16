@@ -56,6 +56,15 @@
     "leadDeleted": "Lead deleted successfully.",
     "leadNotFound": "Lead not found."
   },
+  "deal": {
+    "dealCreated": "Deal created successfully.",
+    "dealsFetched": "Deals fetched successfully.",
+    "dealFetched": "Deal fetched successfully.",
+    "dealUpdated": "Deal updated successfully.",
+    "dealDeleted": "Deal deleted successfully.",
+    "dealNotFound": "Deal not found.",
+    "invalidProbability": "Probability must be between 0 and 100."
+  },
   "emailTemplate": {
     "forgotPasswordSubject": "Reset your password now.",
     "verifyUser": "Account verification."

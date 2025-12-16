@@ -162,6 +162,139 @@ class LeadService {
       throwError(error?.message, error?.statusCode);
     }
   };
+
+  // Get Lead by ID
+  getLeadById = async (leadId) => {
+    try {
+      const lead = await Lead.findOne({
+        _id: leadId,
+        is_deleted: false,
+      })
+        .populate("assigned_to", "first_name last_name email")
+        .populate("created_by", "first_name last_name email")
+        .select("-is_deleted")
+        .lean();
+
+      if (!lead) {
+        return throwError(
+          returnMessage("lead", "leadNotFound"),
+          statusCode.notFound
+        );
+      }
+
+      return {
+        lead: lead,
+      };
+    } catch (error) {
+      logger.error(`Error while getting lead by ID, ${error}`);
+      throwError(error?.message, error?.statusCode);
+    }
+  };
+
+  // Update Lead
+  updateLead = async (leadId, payload, user) => {
+    try {
+      const {
+        first_name,
+        last_name,
+        email,
+        contact_number,
+        company_name,
+        job_title,
+        source,
+        status,
+        notes,
+        assigned_to,
+      } = payload;
+
+      const lead = await Lead.findOne({
+        _id: leadId,
+        is_deleted: false,
+      });
+
+      if (!lead) {
+        return throwError(
+          returnMessage("lead", "leadNotFound"),
+          statusCode.notFound
+        );
+      }
+
+      // Check if email is being updated and if it already exists
+      if (email && email !== lead.email) {
+        if (!validateEmail(email)) {
+          return throwError(returnMessage("auth", "invalidEmail"));
+        }
+
+        const existingLead = await Lead.findOne({
+          email,
+          is_deleted: false,
+          _id: { $ne: leadId },
+        }).lean();
+
+        if (existingLead) {
+          return throwError(
+            returnMessage("lead", "leadAlreadyExists"),
+            statusCode.badRequest
+          );
+        }
+      }
+
+      // Update fields
+      if (first_name !== undefined) lead.first_name = first_name;
+      if (last_name !== undefined) lead.last_name = last_name;
+      if (email !== undefined) lead.email = email;
+      if (contact_number !== undefined) lead.contact_number = contact_number;
+      if (company_name !== undefined) lead.company_name = company_name;
+      if (job_title !== undefined) lead.job_title = job_title;
+      if (source !== undefined) lead.source = source;
+      if (status !== undefined) lead.status = status;
+      if (notes !== undefined) lead.notes = notes;
+      if (assigned_to !== undefined) lead.assigned_to = assigned_to || null;
+
+      await lead.save();
+
+      const updatedLead = await Lead.findById(leadId)
+        .populate("assigned_to", "first_name last_name email")
+        .populate("created_by", "first_name last_name email")
+        .select("-is_deleted")
+        .lean();
+
+      return {
+        lead: updatedLead,
+      };
+    } catch (error) {
+      logger.error(`Error while updating lead, ${error}`);
+      throwError(error?.message, error?.statusCode);
+    }
+  };
+
+  // Delete Lead
+  deleteLead = async (leadId) => {
+    try {
+      const lead = await Lead.findOneAndUpdate(
+        {
+          _id: leadId,
+          is_deleted: false,
+        },
+        {
+          is_deleted: true,
+        },
+        { new: true }
+      );
+
+      if (!lead) {
+        return throwError(
+          returnMessage("lead", "leadNotFound"),
+          statusCode.notFound
+        );
+      }
+
+      return;
+    } catch (error) {
+      logger.error(`Error while deleting lead, ${error}`);
+      throwError(error?.message, error?.statusCode);
+    }
+  };
 }
 
 module.exports = LeadService;

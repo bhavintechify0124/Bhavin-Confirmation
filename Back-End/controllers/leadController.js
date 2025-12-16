@@ -29,3 +29,39 @@ exports.listLeads = catchAsyncError(async (req, res, next) => {
   );
 });
 
+// Get Lead by ID
+exports.getLeadById = catchAsyncError(async (req, res, next) => {
+  const lead = await leadService.getLeadById(req?.params?.id);
+  sendResponse(
+    res,
+    true,
+    returnMessage("lead", "leadFetched"),
+    lead,
+    statusCode.success
+  );
+});
+
+// Update Lead
+exports.updateLead = catchAsyncError(async (req, res, next) => {
+  const lead = await leadService.updateLead(req?.params?.id, req?.body, req?.user);
+  sendResponse(
+    res,
+    true,
+    returnMessage("lead", "leadUpdated"),
+    lead,
+    statusCode.success
+  );
+});
+
+// Delete Lead
+exports.deleteLead = catchAsyncError(async (req, res, next) => {
+  await leadService.deleteLead(req?.params?.id);
+  sendResponse(
+    res,
+    true,
+    returnMessage("lead", "leadDeleted"),
+    null,
+    statusCode.success
+  );
+});
+

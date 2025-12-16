@@ -50,7 +50,11 @@
   "lead": {
     "leadCreated": "Lead created successfully.",
     "leadAlreadyExists": "Lead with this email already exists.",
-    "leadsFetched": "Leads fetched successfully."
+    "leadsFetched": "Leads fetched successfully.",
+    "leadFetched": "Lead fetched successfully.",
+    "leadUpdated": "Lead updated successfully.",
+    "leadDeleted": "Lead deleted successfully.",
+    "leadNotFound": "Lead not found."
   },
   "emailTemplate": {
     "forgotPasswordSubject": "Reset your password now.",

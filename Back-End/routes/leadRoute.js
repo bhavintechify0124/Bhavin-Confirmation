@@ -6,6 +6,9 @@ leadRoute.use(protect);
 
 leadRoute.post("/create", leadController.createLead);
 leadRoute.post("/list", leadController.listLeads);
+leadRoute.get("/:id", leadController.getLeadById);
+leadRoute.put("/:id", leadController.updateLead);
+leadRoute.delete("/:id", leadController.deleteLead);
 
 module.exports = leadRoute;
 

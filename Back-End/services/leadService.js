@@ -35,7 +35,7 @@ class LeadService {
 
       if (!contact_number) {
         return throwError(
-          returnMessage("validation", "contactNumberRequired"),
+          returnMessage("auth", "fillAll"),
           statusCode.badRequest
         );
       }

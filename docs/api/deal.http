@@ -1,0 +1,19 @@
+### Deal Routes - REST Client Documentation
+### Base URL - Update this according to your environment
+@baseUrl = http://localhost:3000/api/v1
+@adminToken = your_admin_token_here
+
+###############################################
+# PUBLIC ADMIN ENDPOINTS (No Authentication Required)
+###############################################
+
+### Admin Login
+POST {{baseUrl}}/admins/login
+Content-Type: application/json
+
+{
+  "email": "admintest@yopmail.com",
+  "password": "Abcd@1234",
+  "remember_me": false
+}
+

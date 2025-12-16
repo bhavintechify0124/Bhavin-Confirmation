@@ -1,6 +1,6 @@
 const logger = require("../logger");
 const { throwError } = require("../helpers/errorUtil");
-const { returnMessage, validateEmail } = require("../utils/utils");
+const { returnMessage, validateEmail, paginationObject } = require("../utils/utils");
 const statusCode = require("../messages/statusCodes.json");
 const Lead = require("../models/leadSchema");
 
@@ -74,6 +74,91 @@ class LeadService {
       };
     } catch (error) {
       logger.error(`Error while creating lead, ${error}`);
+      throwError(error?.message, error?.statusCode);
+    }
+  };
+
+  // List Leads
+  listLeads = async (searchObj) => {
+    try {
+      const queryObj = {
+        is_deleted: false,
+      };
+
+      if (searchObj.search && searchObj.search !== "") {
+        queryObj["$or"] = [
+          {
+            first_name: {
+              $regex: searchObj.search.toLowerCase(),
+              $options: "i",
+            },
+          },
+          {
+            last_name: {
+              $regex: searchObj.search.toLowerCase(),
+              $options: "i",
+            },
+          },
+          {
+            email: {
+              $regex: searchObj.search.toLowerCase(),
+              $options: "i",
+            },
+          },
+          {
+            contact_number: {
+              $regex: searchObj.search.toLowerCase(),
+              $options: "i",
+            },
+          },
+          {
+            company_name: {
+              $regex: searchObj.search.toLowerCase(),
+              $options: "i",
+            },
+          },
+        ];
+      }
+
+      if (searchObj.status && searchObj.status !== "") {
+        queryObj["status"] = {
+          $regex: searchObj.status.toLowerCase(),
+          $options: "i",
+        };
+      }
+
+      if (searchObj.source && searchObj.source !== "") {
+        queryObj["source"] = {
+          $regex: searchObj.source.toLowerCase(),
+          $options: "i",
+        };
+      }
+
+      if (searchObj.assigned_to && searchObj.assigned_to !== "") {
+        queryObj["assigned_to"] = searchObj.assigned_to;
+      }
+
+      const pagination = paginationObject(searchObj);
+
+      const [leads, totalLeads] = await Promise.all([
+        Lead.find(queryObj)
+          .populate("assigned_to", "first_name last_name email")
+          .populate("created_by", "first_name last_name email")
+          .sort(pagination.sort)
+          .skip(pagination.skip)
+          .limit(pagination.result_per_page)
+          .select("-is_deleted")
+          .lean(),
+        Lead.countDocuments(queryObj),
+      ]);
+
+      return {
+        lead_list: leads,
+        page_count: Math.ceil(totalLeads / pagination.result_per_page) || 0,
+        total_count: totalLeads,
+      };
+    } catch (error) {
+      logger.error(`Error while listing leads, ${error}`);
       throwError(error?.message, error?.statusCode);
     }
   };

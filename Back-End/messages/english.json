@@ -49,7 +49,8 @@
   },
   "lead": {
     "leadCreated": "Lead created successfully.",
-    "leadAlreadyExists": "Lead with this email already exists."
+    "leadAlreadyExists": "Lead with this email already exists.",
+    "leadsFetched": "Leads fetched successfully."
   },
   "emailTemplate": {
     "forgotPasswordSubject": "Reset your password now.",

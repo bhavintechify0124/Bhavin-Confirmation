@@ -5,6 +5,7 @@ const { protect } = require("../middlewares/authAdminMiddleware");
 leadRoute.use(protect);
 
 leadRoute.post("/create", leadController.createLead);
+leadRoute.post("/list", leadController.listLeads);
 
 module.exports = leadRoute;
 

@@ -17,3 +17,15 @@ exports.createLead = catchAsyncError(async (req, res, next) => {
   );
 });
 
+// List Leads
+exports.listLeads = catchAsyncError(async (req, res, next) => {
+  const leads = await leadService.listLeads(req?.body);
+  sendResponse(
+    res,
+    true,
+    returnMessage("lead", "leadsFetched"),
+    leads,
+    statusCode.success
+  );
+});
+

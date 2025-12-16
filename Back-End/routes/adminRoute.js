@@ -18,6 +18,7 @@ adminRoute.put(
   adminController.updateProfile
 );
 adminRoute.post("/get-users", adminController.userList);
+adminRoute.post("/get-customers", adminController.customerList);
 adminRoute.post("/update-user-status/:id", adminController.changeStatus);
 adminRoute.delete("/user/:id", adminController.deleteUser);
 adminRoute.get("/notification", adminController.getNotification);

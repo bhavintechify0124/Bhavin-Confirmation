@@ -316,6 +316,84 @@ class AdminService {
     }
   };
 
+  // Customer list
+
+  customerList = async (searchObj, user) => {
+    try {
+      const queryObj = {
+        is_deleted: false,
+      };
+
+      if (searchObj.search && searchObj.search !== "") {
+        queryObj["$or"] = [
+          {
+            first_name: {
+              $regex: searchObj.search.toLowerCase(),
+              $options: "i",
+            },
+          },
+
+          {
+            last_name: {
+              $regex: searchObj.search.toLowerCase(),
+              $options: "i",
+            },
+          },
+          {
+            email: {
+              $regex: searchObj.search.toLowerCase(),
+              $options: "i",
+            },
+          },
+          {
+            contact_number: {
+              $regex: searchObj.search.toLowerCase(),
+              $options: "i",
+            },
+          },
+        ];
+      }
+      if (searchObj.skill_name_n && searchObj.skill_name_n !== "") {
+        queryObj["skills.value"] = {
+          $regex: searchObj.skill_name_n.toLowerCase(),
+          $options: "i",
+        };
+      }
+      if (searchObj.gender && searchObj.gender !== "") {
+        queryObj["gender"] = {
+          $regex: searchObj.gender.toLowerCase(),
+          $options: "i",
+        };
+      }
+      if (searchObj.department && searchObj.department !== "") {
+        queryObj["department"] = {
+          $regex: searchObj.department.toLowerCase(),
+          $options: "i",
+        };
+      }
+
+      const pagination = paginationObject(searchObj);
+
+      const [customers, totalCustomer] = await Promise.all([
+        User.find(queryObj)
+          .sort(pagination.sort)
+          .skip(pagination.skip)
+          .limit(pagination.result_per_page)
+          .select("-is_deleted")
+          .lean(),
+        User.countDocuments(queryObj),
+      ]);
+
+      return {
+        customer_list: customers,
+        page_count: Math.ceil(totalCustomer / pagination.result_per_page) || 0,
+      };
+    } catch (error) {
+      logger.error(`Error while Listing ALL Customers, ${error}`);
+      throwError(error?.message, error?.statusCode);
+    }
+  };
+
   // Skill list
 
   skillList = async (searchObj) => {

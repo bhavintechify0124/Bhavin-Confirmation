@@ -89,6 +89,18 @@ exports.userList = catchAsyncError(async (req, res, next) => {
   );
 });
 
+// Customer List
+exports.customerList = catchAsyncError(async (req, res, next) => {
+  const customers = await adminService.customerList(req?.body);
+  sendResponse(
+    res,
+    true,
+    returnMessage("admin", "usersFetched"),
+    customers,
+    statusCode.success
+  );
+});
+
 // Skill List
 exports.skillList = catchAsyncError(async (req, res, next) => {
   const skills = await adminService.skillList(req?.body);

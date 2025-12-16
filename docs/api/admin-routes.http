@@ -18,7 +18,6 @@ Content-Type: application/json
 }
 
 ### Admin Forgot Password
-# Note: route in code has a typo and is exposed as /fodrgot-password
 POST {{baseUrl}}/admin/fodrgot-password
 Content-Type: application/json
 
@@ -32,7 +31,7 @@ Content-Type: application/json
 
 {
   "email": "admin@example.com",
-  "token": "token_received_in_email",
+  "token": "reset_token_from_email",
   "new_password": "newadminpassword123"
 }
 
@@ -42,13 +41,12 @@ Content-Type: application/json
 ###############################################
 
 ### Admin Change Password
-# Note: route in code has a typo and is exposed as /changem-password
 POST {{baseUrl}}/admin/changem-password
 Authorization: Bearer {{adminToken}}
 Content-Type: application/json
 
 {
-  "old_password": "oldadminpassword123",
+  "old_passworddddd": "oldadminpassword123",
   "new_password": "newadminpassword123"
 }
 
@@ -89,7 +87,7 @@ Content-Type: application/json
   "page": 1,
   "limit": 10,
   "search": "",
-  "skill_name": "",
+  "skill_name_n": "javascript",
   "gender": "",
   "department": ""
 }
@@ -109,7 +107,6 @@ Authorization: Bearer {{adminToken}}
 Content-Type: application/json
 
 ### Admin Get Notifications
-# The service reads `skip` and `limit` from query params
 GET {{baseUrl}}/admin/notification?skip=0&limit=10
 Authorization: Bearer {{adminToken}}
 
@@ -119,5 +116,5 @@ Authorization: Bearer {{adminToken}}
 Content-Type: application/json
 
 {
-  "notification_id": "notification_id_here"  # or use "all" to mark all as read
+  "notification_id": "notification_id_here"
 }

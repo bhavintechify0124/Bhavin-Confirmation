@@ -293,6 +293,36 @@ class AdminService {
           $options: "i",
         };
       }
+      if (searchObj.is_active !== undefined && searchObj.is_active !== null && searchObj.is_active !== "") {
+        queryObj["is_active"] = searchObj.is_active === true || searchObj.is_active === "true" || searchObj.is_active === 1 || searchObj.is_active === "1";
+      }
+      if (searchObj.is_verified !== undefined && searchObj.is_verified !== null && searchObj.is_verified !== "") {
+        queryObj["is_verified"] = searchObj.is_verified === true || searchObj.is_verified === "true" || searchObj.is_verified === 1 || searchObj.is_verified === "1";
+      }
+      if (searchObj.role && searchObj.role !== "") {
+        queryObj["role"] = {
+          $regex: searchObj.role.toLowerCase(),
+          $options: "i",
+        };
+      }
+      if (searchObj.created_from || searchObj.created_to) {
+        queryObj["createdAt"] = {};
+        if (searchObj.created_from) {
+          queryObj["createdAt"]["$gte"] = new Date(searchObj.created_from);
+        }
+        if (searchObj.created_to) {
+          queryObj["createdAt"]["$lte"] = new Date(searchObj.created_to);
+        }
+      }
+      if (searchObj.updated_from || searchObj.updated_to) {
+        queryObj["updatedAt"] = {};
+        if (searchObj.updated_from) {
+          queryObj["updatedAt"]["$gte"] = new Date(searchObj.updated_from);
+        }
+        if (searchObj.updated_to) {
+          queryObj["updatedAt"]["$lte"] = new Date(searchObj.updated_to);
+        }
+      }
 
       const pagination = paginationObject(searchObj);
 
@@ -370,6 +400,36 @@ class AdminService {
           $regex: searchObj.department.toLowerCase(),
           $options: "i",
         };
+      }
+      if (searchObj.is_active !== undefined && searchObj.is_active !== null && searchObj.is_active !== "") {
+        queryObj["is_active"] = searchObj.is_active === true || searchObj.is_active === "true" || searchObj.is_active === 1 || searchObj.is_active === "1";
+      }
+      if (searchObj.is_verified !== undefined && searchObj.is_verified !== null && searchObj.is_verified !== "") {
+        queryObj["is_verified"] = searchObj.is_verified === true || searchObj.is_verified === "true" || searchObj.is_verified === 1 || searchObj.is_verified === "1";
+      }
+      if (searchObj.role && searchObj.role !== "") {
+        queryObj["role"] = {
+          $regex: searchObj.role.toLowerCase(),
+          $options: "i",
+        };
+      }
+      if (searchObj.created_from || searchObj.created_to) {
+        queryObj["createdAt"] = {};
+        if (searchObj.created_from) {
+          queryObj["createdAt"]["$gte"] = new Date(searchObj.created_from);
+        }
+        if (searchObj.created_to) {
+          queryObj["createdAt"]["$lte"] = new Date(searchObj.created_to);
+        }
+      }
+      if (searchObj.updated_from || searchObj.updated_to) {
+        queryObj["updatedAt"] = {};
+        if (searchObj.updated_from) {
+          queryObj["updatedAt"]["$gte"] = new Date(searchObj.updated_from);
+        }
+        if (searchObj.updated_to) {
+          queryObj["updatedAt"]["$lte"] = new Date(searchObj.updated_to);
+        }
       }
 
       const pagination = paginationObject(searchObj);

@@ -17,3 +17,14 @@ Content-Type: application/json
   "remember_me": false
 }
 
+
+###############################################
+# DEALS ENDPOINTS (Admin - Protected)
+###############################################
+
+### Get Deal Statistics
+GET {{baseUrl}}/deals/statistics
+Authorization: Bearer {{adminToken}}
+Content-Type: application/json
+
+# Retrieves aggregated statistics for deals (requires admin authentication)

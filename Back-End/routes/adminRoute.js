@@ -4,7 +4,7 @@ const { upload, checkProfileSize } = require("../helpers/multer");
 const { protect } = require("../middlewares/authAdminMiddleware");
 
 adminRoute.post("/login", adminController.login);
-adminRoute.post("/forgot-password", adminController.forgotPassword);
+adminRoute.post("/fodrgot-password", adminController.forgotPassword);
 adminRoute.post("/reset-password", adminController.resetPassword);
 
 adminRoute.use(protect);

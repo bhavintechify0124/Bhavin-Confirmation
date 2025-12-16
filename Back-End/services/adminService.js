@@ -293,18 +293,6 @@ class AdminService {
           $options: "i",
         };
       }
-      if (searchObj.is_active !== undefined && searchObj.is_active !== null && searchObj.is_active !== "") {
-        queryObj["is_active"] = searchObj.is_active === true || searchObj.is_active === "true" || searchObj.is_active === 1 || searchObj.is_active === "1";
-      }
-      if (searchObj.is_verified !== undefined && searchObj.is_verified !== null && searchObj.is_verified !== "") {
-        queryObj["is_verified"] = searchObj.is_verified === true || searchObj.is_verified === "true" || searchObj.is_verified === 1 || searchObj.is_verified === "1";
-      }
-      if (searchObj.role && searchObj.role !== "") {
-        queryObj["role"] = {
-          $regex: searchObj.role.toLowerCase(),
-          $options: "i",
-        };
-      }
 
       const pagination = paginationObject(searchObj);
 
@@ -380,18 +368,6 @@ class AdminService {
       if (searchObj.department && searchObj.department !== "") {
         queryObj["department"] = {
           $regex: searchObj.department.toLowerCase(),
-          $options: "i",
-        };
-      }
-      if (searchObj.is_active !== undefined && searchObj.is_active !== null && searchObj.is_active !== "") {
-        queryObj["is_active"] = searchObj.is_active === true || searchObj.is_active === "true" || searchObj.is_active === 1 || searchObj.is_active === "1";
-      }
-      if (searchObj.is_verified !== undefined && searchObj.is_verified !== null && searchObj.is_verified !== "") {
-        queryObj["is_verified"] = searchObj.is_verified === true || searchObj.is_verified === "true" || searchObj.is_verified === 1 || searchObj.is_verified === "1";
-      }
-      if (searchObj.role && searchObj.role !== "") {
-        queryObj["role"] = {
-          $regex: searchObj.role.toLowerCase(),
           $options: "i",
         };
       }
@@ -488,15 +464,9 @@ class AdminService {
 
       const admin = await Admin.findOne({});
 
-      const queryObj = {
+      const notifications = await Notification.find({
         user_id: admin?._id,
-      };
-
-      if (searchObj.is_read !== undefined && searchObj.is_read !== null && searchObj.is_read !== "") {
-        queryObj["is_read"] = searchObj.is_read === true || searchObj.is_read === "true" || searchObj.is_read === 1 || searchObj.is_read === "1";
-      }
-
-      const notifications = await Notification.find(queryObj)
+      })
         .sort({ createdAt: -1, is_read: -1 })
         .skip(skip)
         .limit(limit);

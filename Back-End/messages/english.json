@@ -47,6 +47,10 @@
     "userNotVerified": "User is not verified.",
     "userNotFound": "User does not exist."
   },
+  "lead": {
+    "leadCreated": "Lead created successfully.",
+    "leadAlreadyExists": "Lead with this email already exists."
+  },
   "emailTemplate": {
     "forgotPasswordSubject": "Reset your password now.",
     "verifyUser": "Account verification."

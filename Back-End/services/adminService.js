@@ -275,9 +275,9 @@ class AdminService {
           },
         ];
       }
-      if (searchObj.skill_name_n && searchObj.skill_name_n !== "") {
+      if (searchObj.skill_name_new && searchObj.skill_name_new !== "") {
         queryObj["skills.value"] = {
-          $regex: searchObj.skill_name_n.toLowerCase(),
+          $regex: searchObj.skill_name_new.toLowerCase(),
           $options: "i",
         };
       }
@@ -353,9 +353,9 @@ class AdminService {
           },
         ];
       }
-      if (searchObj.skill_name_n && searchObj.skill_name_n !== "") {
+      if (searchObj.skill_name_new && searchObj.skill_name_new !== "") {
         queryObj["skills.value"] = {
-          $regex: searchObj.skill_name_n.toLowerCase(),
+          $regex: searchObj.skill_name_new.toLowerCase(),
           $options: "i",
         };
       }

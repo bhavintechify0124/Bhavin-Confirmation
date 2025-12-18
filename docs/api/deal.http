@@ -35,8 +35,13 @@ Authorization: Bearer {{adminToken}}
   "title": "New Deal",
   "description": "Description of the deal",
   "amount": 1000,
-  "customer_id": "<customerId>",
-  "other_fields": "..."
+  "currency": "USD",
+  "lead_id": "<leadId>",            // use lead_id (not customer_id)
+  "status": "open",                 // optional: e.g., open, won, lost
+  "probability": 50,                 // optional: 0-100
+  "expected_close_date": "2025-12-31",
+  "assigned_to": "<adminOrUserId>",
+  "notes": "Any notes about the deal"
 }
 
 ### List Deals
@@ -47,12 +52,21 @@ Authorization: Bearer {{adminToken}}
 {
   "page": 1,
   "limit": 10,
-  "filters": {}
+  "search": "keyword",              // searches title/description
+  "status": "open",                 // filter by status
+  "lead_id": "<leadId>",           // filter by lead
+  "assigned_to": "<userId>",       // filter by assigned user
+  "min_amount": 100,                 // optional
+  "max_amount": 10000,               // optional
+  "sort": { "createdAt": -1 }      // optional sort object
 }
 
 ### Deal Statistics
-GET {{baseUrl}}/deals/statistics
+GET {{baseUrl}}/deals/statistics?start_date=2025-01-01&end_date=2025-12-31&assigned_to=<userId>&lead_id=<leadId>
 Authorization: Bearer {{adminToken}}
+
+# The statistics endpoint also accepts the same params in the request body (POST-style).
+# Supported filters: start_date, end_date, assigned_to, lead_id
 
 ### Get Deal By ID
 GET {{baseUrl}}/deals/{{dealId}}
@@ -65,7 +79,16 @@ Authorization: Bearer {{adminToken}}
 
 {
   "title": "Updated title",
-  "amount": 1200
+  "description": "Updated description",
+  "amount": 1200,
+  "currency": "USD",
+  "lead_id": "<leadId>",
+  "status": "won",
+  "probability": 90,
+  "expected_close_date": "2025-12-15",
+  "actual_close_date": "2025-12-16",
+  "assigned_to": "<userId>",
+  "notes": "Updated notes"
 }
 
 ### Delete Deal

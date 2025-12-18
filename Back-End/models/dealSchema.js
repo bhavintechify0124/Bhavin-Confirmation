@@ -23,3 +23,5 @@ const dealSchema = new mongoose.Schema(
 const Deal = mongo_connection.model("deal", dealSchema);
 module.exports = Deal;
 
+
+

@@ -22,3 +22,5 @@ const leadSchema = new mongoose.Schema(
 const Lead = mongo_connection.model("lead", leadSchema);
 module.exports = Lead;
 
+
+
